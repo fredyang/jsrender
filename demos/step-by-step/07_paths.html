@@ -95,6 +95,11 @@
 		}
 	} );
 
+	$.views.registerHelpers({
+		debug: function () {
+
+		}
+	})
 	$( "#peopleList" ).html(
 		$( "#peopleTemplate" ).render( people )
 	);

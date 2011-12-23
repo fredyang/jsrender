@@ -3,20 +3,21 @@
 <head>
 	<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 	<script src="../../jsrender.js" type="text/javascript"></script>
-	<link href="../resources/demos.css" rel="stylesheet" type="text/css" />
+	<link href="../resources/demos.css" rel="stylesheet" type="text/css"/>
 
-	<link href="../resources/movielist.css" rel="stylesheet" type="text/css" />
+	<link href="../resources/movielist.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<a href="index.html">Home</a><br />
+<a href="index.html">Home</a><br/>
 
 <h3>Using {{each}} to render hierarchical data - external template.</h3>
-
+<!--			{{each Languages tmpl="#columnTemplate"}}
+-->
 <script id="movieTemplate" type="text/x-jquery-tmpl">
 	<tr>
 		<td>{{=Title}}</td>
 		<td>
-			{{each Languages tmpl="#columnTemplate"}}
+			{{render Languages tmpl="#columnTemplate"}}
 		</td>
 		<td>
 			{{each Languages tmpl=tmpl}}
@@ -36,7 +37,14 @@
 	</span>
 </script>
 
-<table><tbody class="header"><tr><th>Synopsis</th><th>Fixed Template</th><th>Template specified in data</th></tr></tbody>
+<table>
+	<tbody class="header">
+	<tr>
+		<th>Synopsis</th>
+		<th>Fixed Template</th>
+		<th>Template specified in data</th>
+	</tr>
+	</tbody>
 	<tbody id="movieList"></tbody>
 </table>
 
@@ -44,35 +52,66 @@
 
 	var movies = [
 		{
-			Title: "Meet Joe Black",
-			Languages: [
-				{ Name: "English" },
-				{ Name: "French" }
+			Title:"Meet Joe Black",
+			Languages:[
+				{ Name:"English" },
+				{ Name:"French" }
 			],
-			tmpl: "#columnTemplate"
+			tmpl:"#columnTemplate"
 		},
 		{
-			Title: "Eyes Wide Shut",
-			Languages: [
-				{ Name: "French" },
-				{ Name: "German" },
-				{ Name: "Spanish" }
+			Title:"Eyes Wide Shut",
+			Languages:[
+				{ Name:"French" },
+				{ Name:"German" },
+				{ Name:"Spanish" }
 			],
-			tmpl: "#rowTemplate"
+			tmpl:"#rowTemplate"
 		},
 		{
-			Title: "The Inheritance",
-			Languages: [
-				{ Name: "English" },
-				{ Name: "German" }
+			Title:"The Inheritance",
+			Languages:[
+				{ Name:"English" },
+				{ Name:"German" }
 			],
-			tmpl: "#columnTemplate"
+			tmpl:"#columnTemplate"
 		}
 	];
+
+	$.views.registerTags( {
+		render:function ( dataSource ) {
+//			var thisObject = {
+//				_encode: "",
+//				_hash: "",
+//				_path: "$data.Language",
+//				tmpl: "", //available if you specified tmpl="xxx"
+//				_view: {} //current view context, _view.parent refer to parent's $view
+//			};
+
+			debugger;
+			var html = $.render(dataSource, this.tmpl, this._view, this._view.parent, this._path, "render");
+			//$.render(dataSource, this.tmpl, this._view, this._view.parent, this._path, "render");
+			return html;
+			//this refer to
+			//$.render( dataSource, this.tmpl, this. );
+			//			render:render = function ( data, tmpl, context, parentView, path, tagName ) {
+
+		}
+	} );
+
+
+		$.views.registerTags( {
+			render:function ( dataSource ) {
+				return $.render(dataSource, this.tmpl, this._view, this._view.parent, this._path, "render");
+			}
+		} );
+
 
 	$( "#movieList" ).html(
 		$( "#movieTemplate" ).render( movies )
 	);
+	/*	{{each Languages tmpl="#columnTemplate"}}*/
+
 
 </script>
 
