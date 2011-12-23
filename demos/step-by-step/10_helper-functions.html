@@ -15,6 +15,7 @@
 <script id="movieTemplate1" type="text/x-jquery-tmpl">
 	<tr>
 		<td>{{=Title}}</td>
+			{{debug}}
 		<td>
 			{{if $ctx.not(Languages) tmpl="#messageTmpl"}}
 		</td>
@@ -79,9 +80,17 @@ $.views.registerHelpers({
 
 <script type="text/javascript">
 
+	$.views.registerTags({
+		debug: function () {
+			debugger;
+			return ""
+		}
+	})
 	$.views.registerHelpers({
 
+
 		format: function( val, format ){
+			debugger;
 			var ret;
 			switch( format ) {
 				case "upper":
@@ -122,12 +131,12 @@ $.views.registerHelpers({
 	];
 
 	$( "#movieList1" ).html(
-		$( "#movieTemplate1" ).render( movies )
+		$( "#movieTemplate1" ).render( movies , { name: "fred"})
 	);
 
-	$( "#movieList2" ).html(
-		$( "#movieTemplate2" ).render( movies )
-	);
+//	$( "#movieList2" ).html(
+//		$( "#movieTemplate2" ).render( movies , {name:"jeff"})
+//	);
 
 </script>
 

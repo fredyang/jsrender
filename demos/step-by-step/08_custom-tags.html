@@ -36,8 +36,14 @@ $.views.registerTags({
 
 <script id="movieTemplate" type="text/x-jquery-tmpl">
 	<tr>
-		<td>{{=Title}}</td>
+		<td>{{=Title}} {{=$ctx.greeting}}</td>
+		<!--"reverse" is assigned to reference "this" in the sort function
+		    "tmpl" is assigned to refererence "this" in the sort function
+		 -->
+		<!--there use cached template, with template id "#sortedTemplate-->
 		<td>{{sort Languages reverse=false tmpl="#sortedTemplate"}}</td>
+
+		<!--here use template inline-->
 		<td>{{#sort Languages reverse=true}}
 				<div>
 					<b>{{=Name}}</b>
@@ -60,6 +66,7 @@ $.views.registerTags({
 	$.views.registerTags({
 
 		sort: function( array ){
+			debugger;
 			var ret = "";
 			if ( this.reverse ) {
 				// Render in reverse order
@@ -94,9 +101,52 @@ $.views.registerTags({
 	];
 
 	$( "#movieList" ).html(
-		$( "#movieTemplate" ).render( movies )
+		$( "#movieTemplate" ).render( movies, {greeting: "hello"} )
 	);
 
+	function xxxx( $data, $view ) {
+		//this refer to window
+		//$view refer
+		try {
+			var views = jQuery.views,
+				tag = views.renderTag,
+				enc = views.encode,
+				html = views.encoders.html,
+				$ctx = $view && $view.ctx,
+				result = "" +
+				         "\n	<tr>\n		<td>" +
+				         html( $data.Title || "" ) +
+				         "</td>\n		<td>" +
+				         tag( "sort",
+					         $view,
+					         "",
+					         "",
+					         {
+						         reverse:false,
+						         tmpl:"#sortedTemplate",
+						         _hash:'reverse:false,tmpl:"#sortedTemplate",',
+						         _path:'$data.Languages'
+					         },
+					         $data.Languages
+				         ) +
+				         "</td>\n		<td>" +
+
+				         tag( "sort",
+					         $view,
+					         "",
+					         1, //id of inline template
+					         {
+						         reverse:true,
+						         _hash:'reverse:true,',
+						         _path:'$data.Languages'
+					         },
+					         $data.Languages
+				         ) +
+				         "\n		</td>\n	</tr>\n";
+			return result;
+
+		} catch( e ) {return views.err( e );}
+	}
 </script>
 
 </body>
