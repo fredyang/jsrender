@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+	<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
+	<script src="../../jsrender.js" type="text/javascript"></script>
+</head>
+<body>
+
+
+<script type="text/html" id="mytmpl">
+	{{=$ctx.testDataIntegrity($data)}}
+</script>
+
+<script type="text/html" id="mytmpl3">
+	{{#if $data}}
+	{{=$ctx.testDataIntegrity($data)}}
+	{{/if}}
+</script>
+
+<h2>expected result</h2>
+
+<p id="result"></p>
+
+
+<h2>incorrect result</h2>
+
+<p id="result3"></p>
+<script>
+
+	$.views.helpers.testDataIntegrity = function ( dataSource ) {
+		if ( dataSource === object ) {
+			return "data is intact";
+		} else {
+			return "data is tampered";
+		}
+	}
+
+	var object = [{ name:"john"}];
+	var objectWrapper = [object]
+
+	$( "#result" ).html(
+		$( "#mytmpl" ).render( objectWrapper )
+	);
+
+	$( "#result3" ).html(
+		$( "#mytmpl3" ).render( objectWrapper )
+	);
+
+</script>
+
+</body>
+</html>

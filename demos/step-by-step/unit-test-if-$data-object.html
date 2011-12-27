@@ -8,18 +8,12 @@
 
 
 <script type="text/html" id="mytmpl">
-	{{=$data}}x
-</script>
-
-<script type="text/html" id="mytmpl2">
-	{{#each $data}}
-	{{=$data}}x
-	{{/if}}
+	{{=$ctx.testDataIntegrity($data)}}
 </script>
 
 <script type="text/html" id="mytmpl3">
 	{{#if $data}}
-	{{=$data}}x
+	{{=$ctx.testDataIntegrity($data)}}
 	{{/if}}
 </script>
 
@@ -27,28 +21,28 @@
 
 <p id="result"></p>
 
-<h2>each result</h2>
-
-<p id="result2"></p>
 
 <h2>incorrect result</h2>
 
 <p id="result3"></p>
 <script>
 
-	var array = ["one", "two"];
-	var arrayAsObject = [ array ];
+	$.views.helpers.testDataIntegrity = function (dataSource) {
+		if (dataSource === object) {
+			return "data is intact";
+		} else {
+			return "data is tampered";
+		}
+	}
+
+	var object = { name: "john"};
 
 	$( "#result" ).html(
-		$( "#mytmpl" ).render( arrayAsObject )
-	);
-
-	$( "#result2" ).html(
-		$( "#mytmpl2" ).render( arrayAsObject )
+		$( "#mytmpl" ).render( object )
 	);
 
 	$( "#result3" ).html(
-		$( "#mytmpl3" ).render( arrayAsObject )
+		$( "#mytmpl3" ).render( object )
 	);
 
 </script>
