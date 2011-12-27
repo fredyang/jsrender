@@ -39,6 +39,10 @@ window.JsViews || window.jQuery && jQuery.views || (function ( window, undefined
 				return render( data, this[0], context, parentView, path );
 			},
 
+			renderObject:function ( data, context, parentView, path ) {
+				return $.renderObject( data, this[0], context, parentView, path );
+			},
+
 			// Consider the first wrapped element as a template declaration, and get the compiled template or store it as a named template.
 			template:function ( name, context ) {
 				return $.template( name, this[0], context );
@@ -122,7 +126,7 @@ window.JsViews || window.jQuery && jQuery.views || (function ( window, undefined
 								}
 							}
 							view.onElse = undefined; // If condition satisfied, so won't run 'else'.
-							return render( view.data, presenter.tmpl, view.ctx, view );
+							return render( [view.data], presenter.tmpl, view.ctx, view );
 						};
 						return view.onElse( this, arguments );
 					},
@@ -330,6 +334,10 @@ window.JsViews || window.jQuery && jQuery.views || (function ( window, undefined
 					? "<!--tmpl(" + (path || "") + ") " + (tagName ? "tag=" + tagName : tmpl._name) + "-->" + result + "<!--/tmpl-->"
 					// else return just the string result
 					: result;
+			},
+
+			renderObject:function ( data, tmpl, context, parentView, path, tagName ) {
+				return render( [data], tmpl, context, parentView, path, tagName );
 			},
 
 			//===============
@@ -573,3 +581,17 @@ window.JsViews || window.jQuery && jQuery.views || (function ( window, undefined
 		return selector;
 	}
 })( window );
+
+$.views.registerTags( {
+	render:function ( dataSource ) {
+		return $.render( dataSource, this.tmpl, this._view, this._view.parent, this._path, "render" );
+	},
+	renderObject:function ( dataSource ) {
+		debugger;
+		return $.renderObject( dataSource, this.tmpl, this._view, this._view.parent, this._path, "render" );
+	},
+	debug:function () {
+		debugger;
+		return "";
+	}
+} );

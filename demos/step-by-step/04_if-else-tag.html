@@ -3,12 +3,12 @@
 <head>
 	<script src="http://code.jquery.com/jquery-latest.js" type="text/javascript"></script>
 	<script src="../../jsrender.js" type="text/javascript"></script>
-	<link href="../resources/demos.css" rel="stylesheet" type="text/css" />
+	<link href="../resources/demos.css" rel="stylesheet" type="text/css"/>
 
-	<link href="../resources/movielist.css" rel="stylesheet" type="text/css" />
+	<link href="../resources/movielist.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-<a href="index.html">Home</a><br />
+<a href="index.html">Home</a><br/>
 
 <h3>Using {{if}} and {{else}} to render conditional sections.</h3>
 
@@ -17,44 +17,65 @@
 		<td>{{=Title}}</td>
 		<td>
 			{{#if Languages}}
-				Alternative languages: <em>{{=Languages}}</em>.
+			Alternative languages: <em>{{=Languages}}</em>.
 			{{else Subtitles}}
-				Original language only... <br/>Subtitles in <em>{{=Subtitles}}</em>.
+			Original language only... <br/>Subtitles in <em>{{=Subtitles}}</em>.
 			{{else}}
-				Original version only, without subtitles.
+			Original version only, without subtitles.
 			{{/if}}
 		</td>
 	</tr>
 </script>
 
-<table><tbody class="header"><tr><th>Title</th><th>Languages</th></tr></tbody>
+<table>
+	<tbody class="header">
+	<tr>
+		<th>Title</th>
+		<th>Languages</th>
+	</tr>
+	</tbody>
 	<tbody id="movieList"></tbody>
 </table>
 
+<script type="text/html" id="f1">
+	<ul>
+		{{#each $data}}
+			{{debug}}
+		<li>{{=$data}}</li>
+		{{/each}}
+	</ul>
+</script>
 <script type="text/javascript">
 
 	var movies = [
 		{
-			Title: "Meet Joe Black",
-			Languages: "English and French",
-			Subtitles: "English"
+			Title:"Meet Joe Black",
+			Languages:"English and French",
+			Subtitles:"English"
 		},
 		{
-			Title: "Eyes Wide Shut",
-			Subtitles: "French and Spanish"
+			Title:"Eyes Wide Shut",
+			Subtitles:"French and Spanish"
 		},
 		{
-			Title: "The Mighty"
+			Title:"The Mighty"
 		},
 		{
-			Title: "City Hunter",
-			Languages: "Mandarin and Chinese"
+			Title:"City Hunter",
+			Languages:"Mandarin and Chinese"
 		}
 	];
+
+	var numbers = [1, 2, 3];
 
 	$( "#movieList" ).html(
 		$( "#movieTemplate" ).render( movies )
 	);
+
+	$( "body" ).append(
+		$( "#f1" ).renderObject( numbers )
+	);
+
 
 </script>
 
